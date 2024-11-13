@@ -31,8 +31,15 @@ cd rownd-demo
 ```bash
 npm install
 ```
+3. Get your Rownd app key from the [Rownd Dashboard](https://app.rownd.io).
 
-3. Run the development server:
+4. Create a `.env.local` file with your Rownd app key:
+```env
+NEXT_PUBLIC_ROWND_APP_KEY=your_app_key_here
+```
+Note: Next.js requires environment variables that need to be accessible in the browser (client-side) to be prefixed with `NEXT_PUBLIC_`. This is why we use `NEXT_PUBLIC_ROWND_APP_KEY` instead of just `ROWND_APP_KEY`.
+
+4. Run the development server:
 ```bash
 npm run dev
 ```

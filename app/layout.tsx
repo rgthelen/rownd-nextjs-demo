@@ -25,10 +25,30 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log('Environment variables:', {
+    NEXT_PUBLIC_ROWND_APP_KEY: process.env.NEXT_PUBLIC_ROWND_APP_KEY,
+  });
+
+  const rowndAppKey = process.env.NEXT_PUBLIC_ROWND_APP_KEY;
+
+  if (!rowndAppKey) {
+    console.error('NEXT_PUBLIC_ROWND_APP_KEY is not defined');
+    return (
+      <html lang="en">
+        <body>
+          <div className="p-4 bg-red-100 text-red-700">
+            Error: NEXT_PUBLIC_ROWND_APP_KEY is not defined. 
+            Please check your .env.local file.
+          </div>
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <RowndProvider appKey="key_jujf27ehwpeq41po66xogr5h">
+        <RowndProvider appKey={rowndAppKey}>
           <AuthButtonHandler />
           {children}
         </RowndProvider>

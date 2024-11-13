@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js + Rownd Authentication Demo
+
+This project demonstrates how to implement authentication in a Next.js application using Rownd, deployed on Cloudflare Pages. It showcases server-side rendering, protected routes, and edge runtime capabilities.
+
+## Features
+
+- 🔐 Authentication with Rownd
+- 🌐 Edge Runtime support
+- 🛡️ Protected routes
+- ⚡ Server-side rendering
+- 📱 Responsive design
+- 🔄 Automatic state management
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ installed
+- A Rownd account and app key
+- (Optional) Cloudflare account for deployment
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/rownd-demo.git
+cd rownd-demo
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+## Project Structure
+
+```
+rownd-demo/
+├── app/
+│   ├── components/         # Shared components
+│   ├── dashboard/         # Protected dashboard page
+│   ├── layout.tsx         # Root layout with Rownd provider
+│   ├── page.tsx           # Home page
+│   └── globals.css        # Global styles
+├── public/               # Static assets
+└── middleware.ts        # Rownd authentication middleware
+```
+
+## Rownd Integration
+
+### Setup
+
+1. The Rownd provider is configured in `app/layout.tsx`:
+```typescript
+<RowndProvider appKey="your_app_key">
+  {children}
+</RowndProvider>
+```
+
+2. Protected routes use the `withRowndRequireSignIn` HOC:
+```typescript
+export default withRowndRequireSignIn(DashboardPage, cookies);
+```
+
+3. Middleware ensures authentication for specific routes:
+```typescript
+export const config = {
+  matcher: [
+    "/api/rownd-token-callback",
+    '/dashboard/:path*',
+  ]
+};
+```
+
+### Key Features
+
+- **Server Components**: Navigation and user profile are rendered server-side
+- **Edge Runtime**: Pages run on Cloudflare's edge network
+- **Protected Routes**: Automatic redirection for unauthenticated users
+- **SSR**: Server-side rendering with authentication state
+
+## Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run deploy` - Deploy to Cloudflare Pages
+
+### Authentication Flow
+
+1. Users click "Sign In" in the navigation
+2. Rownd handles the authentication process
+3. Upon success, the UI updates automatically
+4. Protected routes become accessible
+5. User data is available server-side via `getRowndUser`
+
+## Deployment
+
+### Cloudflare Pages
+
+1. Install Wrangler:
+```bash
+npm i -g wrangler
+```
+
+2. Build and deploy:
+```bash
+npm run deploy
+```
+
+### Environment Variables
+
+Required environment variables for deployment:
+- `NEXT_PUBLIC_ROWND_APP_KEY`: Your Rownd app key
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+- [Rownd Documentation](https://docs.rownd.io)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Cloudflare Pages](https://pages.cloudflare.com)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License - see the LICENSE file for details.

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 
 export default function NavBar() {
-  const { is_authenticated, user, requestSignIn, signOut, is_initializing} = useRownd();
+  const { is_authenticated, user, requestSignIn, signOut, manageAccount, is_initializing } = useRownd();
 
   return (
     <nav className="bg-foreground/5 p-4">
@@ -16,9 +16,17 @@ export default function NavBar() {
         </div>
         <div className="flex items-center gap-4">
           {is_authenticated && (
-            <span className="text-sm text-foreground/60">
-              {user.data.email}
-            </span>
+            <>
+              <span className="text-sm text-foreground/60">
+                {user.data.email}
+              </span>
+              <button
+                onClick={() => manageAccount()}
+                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition-colors"
+              >
+                Profile
+              </button>
+            </>
           )}
           <button 
             onClick={() => is_authenticated ? signOut() : requestSignIn()}

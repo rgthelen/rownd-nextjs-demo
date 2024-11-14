@@ -42,3 +42,5 @@ next-env.d.ts
 # Cloudflare
 .wrangler/
 wrangler.toml
+/wrangler.toml/
+wrangler.toml  # Add this line to ignore wrangler.toml
